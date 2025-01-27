@@ -1,0 +1,461 @@
+---
+title: "\U0001F917 Hello, world!"
+author: "Laura Carroll, Umeå University"
+subtitle: A brief introduction to R for biologists
+output:
+  html_document:
+    df_print: paged
+---
+
+## Introduction
+
+
+*   🏆 **Goal:** Learn basics of the R programming language, using examples from biology
+*   💾 **Programs Used:**
+
+    + [R](https://www.r-project.org/): a programming language and environment for statistical computing and graphics
+    + [RStudio](https://posit.co/download/rstudio-desktop/): an integrated development environment (IDE; i.e., software that can make coding easier)
+    + [Biostrings](https://bioconductor.org/packages/release/bioc/html/Biostrings.html): an R package for biological string (sequence) manipulation
+
+## Learning Outcomes
+
+*   ➗ Perform basic mathematical operations in R
+*   🌍 Write a "Hello, world!" program in R
+*   📦 Install and load packages in R
+*   🧬 Use the Biostrings package to manipulate biological sequence (DNA, RNA, amino acid) data in R
+
+<br></br>
+<br></br>
+<br></br>
+
+## 💾 Exercise 0: Install R and RStudio (if needed)
+
+If you're reading this, you've probably already installed [R](https://www.r-project.org/) (a programming language) and [RStudio](https://posit.co/download/rstudio-desktop/) (software that makes programming in R easy)! If you haven't, follow the steps below for your corresponding operating system.
+
+### 🪟 For Windows users
+
+0.1 Download R from the CRAN website: http://cran.r-project.org/bin/windows/base/release.htm 
+
+0.2 Run the `.exe` file that was just downloaded.
+
+0.3 Download and install RStudio: https://posit.co/download/rstudio-desktop/#download 
+
+### 🍎 For Mac users
+
+0.1 Download R from the CRAN website: http://cran.r-project.org/bin/macosx
+
+0.2 Under `Latest release:`, select the `.pkg` file corresponding to the latest R version. **Important note:** There are different `.pkg` files for the newer Apple silicon (M1,2,..) Macs, and the older Intel Macs. Not sure which type of Mac you have? Click the apple (🍎) button in the upper left corner of your Mac's screen -> Click `About This Mac` -> Go to the item labeled `Processor`; this should tell you whether you have a newer Apple silicon Mac (e.g., `M1`) or the older Intel Mac (`Intel`).
+
+0.3 Double click on the downloaded file to install R.
+
+0.4 Download and install RStudio: https://posit.co/download/rstudio-desktop/#download 
+
+### 🐧 For Linux users
+
+0.1 Follow the instructions for your distribution from CRAN: https://cloud.r-project.org/bin/linux.
+
+0.2 Download and install RStudio: https://posit.co/download/rstudio-desktop/#download 
+
+<br></br>
+<br></br>
+<br></br>
+
+## ➗ Exercise 1: Perform basic mathematical operations in R
+
+We can use R for the same problems we'd use a calculator for...and much, much more! Let's kick off our R journey by using R to do some simple math!
+
+<br></br>
+
+1.1 Open RStudio (if you haven't installed R and RStudio, see Exercise 0 above), and make sure the `Console` tab is selected.
+
+<br></br>
+
+1.2 We can use R to add numbers; let's test this out by adding two numbers, `2` and `5`. To do this, type the following into the R `Console`, and hit "Enter":
+```{r}
+2+5
+```
+
+<br></br>
+
+1.3 We can also use the `-` character to subtract:
+```{r}
+263-27
+```
+
+<br></br>
+
+1.4 We can multiply numbers using the `*` character:
+```{r}
+8*7*0.5
+```
+
+<br></br>
+
+1.5 We can also divide numbers using `/`:
+```{r}
+21/7
+```
+
+<br></br>
+
+1.6 R follows the order of operations:
+```{r}
+5+3*2
+```
+
+This is the same as the following:
+```{r}
+5+(3*2)
+```
+
+While the following will perform addition first:
+```{r}
+(5+3)*2
+```
+
+<br></br>
+
+1.7 We can also use exponents with `^`:
+```{r}
+3^2
+```
+
+<br></br>
+
+1.8 `sqrt` computes the square root:
+```{r}
+sqrt(9)
+```
+
+<br></br>
+
+1.9 What does `log` do? We can ask RStudio for help by appending a `?` character to the front of a function name:
+
+```{r}
+?log
+```
+
+It computes logarithms! Let's test it out:
+```{r}
+log(100)
+```
+
+Hmmm, that answer may look a bit strange if we're expecting a base-10 logarithm! But if we check the help screen, which is printed when we ran `?log`, we can see an important detail: `log computes logarithms, by default natural logarithms`. If we read the help screen for `log`, we can see that `log` can accept two arguments (or inputs; see the section labeled `Arguments`):
+
+* `x: a numeric or complex vector.` In R, a `numeric` is just a number (an integer, or a decimal, also known as a "float"). Here, this is just `100`, our input value (i.e., we want to compute the base-10 logarithm of `100`)
+* `base: a positive or complex number: the base with respect to which logarithms are computed. Defaults to e=exp(1).`. This is the base of our logarithm; by default, `log` calculates a natural logarithm, but we want to change this to `10` to compute the base-10 logarithm of `100`.
+
+To compute a base-10 logarithm of 100, let's try the following:
+```{r}
+log(x = 100, base = 10)
+```
+
+Now that's more like it! R also has a separate function, `log10`, for computing the base-10 logarithm of a number:
+```{r}
+log10(100)
+```
+
+What happens when we change the order of the `x` and `base arguments?
+```{r}
+log(base = 10, x = 100)
+```
+Nothing! We get the same answer, as long as we tell R exactly which number is `x` and which number is `base`.
+
+But what if we don't specify which number is which? Let's test it out:
+```{r}
+log(100, 10)
+```
+When we put `100` first and `10` second, we get what we expect.
+
+Now what if we put `10` first and `100` second?
+```{r}
+log(10, 100)
+```
+
+We get a different answer! If we look at the help screen, it looks like `log` expects `x` first, and `base` second. So if we don't specify which is which (by using `x = ` and `base = `), R will just assume!
+
+Let's sanity check this:
+```{r}
+log(x = 10, base = 100)
+```
+We get the same answer as `log(10, 100)`. This isn't important for this particular exercise, but the functions we use and the assumptions that they make are definitely something to keep in mind when we're programming!
+
+<br></br>
+<br></br>
+<br></br>
+
+
+## 🌍 Exercise 2: Hello, world!
+
+Now that we know how to perform simple mathematical operations in R, let's write our very first computer program! Specifically, we'll write a super simple program, called a ["Hello, world!"](https://en.wikipedia.org/wiki/%22Hello,_World!%22_program) program.
+
+<br></br>
+
+2.1 To write a "Hello, world!" program in R, we only need a single function: the `print` function! Type the following in the R console, and hit "Enter" to run:
+
+```{r}
+print("Hello, world!")
+```
+
+Congratulations, you just wrote a ["Hello, world!"](https://en.wikipedia.org/wiki/%22Hello,_World!%22_program) program! This may seem trivial, but in some languages, [it can be much more complicated.](https://www.reddit.com/r/ProgrammerHumor/comments/10hzwcf/most_complex_hello_world_program/) Luckily for us, R makes it super simple!
+
+<br></br>
+
+2.2 You may have noticed that `"Hello, world!"` is not a number; a string of text like this is often referred to as a "string" (or sometimes in R, a "character" value). We can use R to not only perform mathematical operations, but operations with strings (text data) as well!
+
+For example, we can paste two strings together using the `paste` command:
+```{r}
+paste("Hello, world!", "I love R!", sep = " ")
+```
+
+With this command, we concatenate the first string (`"Hello, world!"`) and the second string (`"I love R!"`), and put a separator between them (in our case, a space: `sep = " "`).
+
+<br></br>
+
+2.3 What if we change `sep = " "` to `sep = "-"`?
+```{r}
+paste("Hello, world!", "I love R!", sep = "-")
+```
+This concatenates our two strings together, but this time, we put a hyphen (`-`) between them!
+
+<br></br>
+
+2.4 It's probably getting really annoying typing `"Hello, world!"` every time we want to use it! We can make our life easier by storing `"Hello, world!"` as a variable. Let's store the string `"Hello, world!"` as a variable named `hi`:
+```{r}
+hi <- "Hello, world!"
+```
+
+Now, any time we want to print `"Hello, world!"`, we can just print `hi`:
+```{r}
+print(hi)
+```
+
+<br></br>
+
+2.5 Let's store `"I love R!"` as a variable named `love`:
+```{r}
+love <- "I love R!"
+```
+
+We can now print it:
+```{r}
+print(love)
+```
+
+<br></br>
+
+2.6 Now let's try concatenating our strings using `paste`, but this time, we'll use the variables:
+```{r}
+paste(hi, love, sep = " ")
+```
+
+<br></br>
+
+2.7 Just for fun, let's reverse `hi` and `love`:
+```{r}
+paste(love, hi, sep = " ")
+```
+
+<br></br>
+
+2.8 We can store the output of the `paste` command as a variable as well! Let's concatenate our strings using `paste` (using our variables as input), but this time, we'll store the output as a new variable, `greet`:
+```{r}
+greet <- paste(hi, love, sep = " ")
+```
+
+We can then print `greet`:
+```{r}
+print(`greet`) 
+```
+
+<br></br>
+
+2.9 We can also store numerical values as variables; let's assign the number `3` to the variable `foo`:
+```{r}
+foo <- 3
+```
+
+We can print it:
+```{r}
+print(foo)
+```
+
+<br></br>
+
+2.10 Let's assign the number `6` to the variable `bar`:
+```{r}
+bar <- 6
+```
+
+And just for fun, let's print `bar`:
+```{r}
+print(bar)
+```
+
+<br></br>
+
+2.11 Let's perform some mathematical operations with `foo` and `bar`!
+```{r}
+foo + bar
+foo - bar
+foo * bar
+foo / bar
+bar ^ foo
+sqrt(bar + foo)
+```
+
+<br></br>
+
+2.12 What happens when we try to add `foo` and `hi`?
+```{r, error = TRUE}
+foo + hi
+```
+We get an error! This is because `foo` is numeric, and `hi` is a string (character). We can check this using the `class` function:
+```{r}
+print(foo)
+class(foo)
+print(hi)
+class(hi)
+```
+We got an error because the `+` operator can only add numerical values, and one of our values (`hi`) is a string (character)!
+
+<br></br>
+
+2.13 Let's go back to `"Hello, world!"` for a second; we can try out some other cool string manipulation functions! Let's use the `gsub` function to replace `Hello` with `Hej`!
+```{r}
+gsub(pattern = "Hello", replacement = "Hej", x = hi)
+```
+
+Here, we told `gsub` to use our variable `hi` as input (`x = hi`), look for a specific pattern (`pattern`), specifically `Hello`, and replace it with `Hej` (`replacement = "Hej"`).
+
+We can even store this as a new variable, `hej`:
+```{r}
+hej <- gsub(pattern = "Hello", replacement = "Hej", x = hi)
+print(hej)
+```
+
+Our variable `hi` remains unchanged:
+```{r}
+print(hi)
+```
+
+<br></br>
+
+2.14 What happens when we put double quotes (`"`) around `hi`?
+```{r}
+print("hi")
+```
+R just prints `"hi"`! Why is this? By using double quotes, R interprets `"hi"` as a string (character), not a variable!
+
+Without the double quotes, R interprets `hi` as a variable and prints `"Hello, world!" (because we stored `"Hello, world!"` as the variable, `hi`):
+```{r}
+print(hi)
+```
+
+<br></br>
+
+2.15 What happens when we use single quotes (`'`)?
+```{r}
+print('hi')
+```
+
+R interprets this as a string (character), the same way it did when we used double quotes. In R, single and double quotes can typically be used interchangeably (this is not the case for many languages!).
+
+<br></br>
+<br></br>
+<br></br>
+
+
+## 📦 Exercise 3: Install and load packages in R
+
+Now that we know a little bit about how to manipulate strings (text) in R, let's play around with a special type of text data...DNA sequences! Before we can do that, we need to install a few additional [R packages](https://cran.r-project.org/web/packages/available_packages_by_name.html), which will have some handy functions designed specifically for manipulating biological sequences.
+
+<br></br>
+
+3.1 Let's start by installing the [Biostrings](https://bioconductor.org/packages/release/bioc/html/Biostrings.html) package. To install the Biostrings package, run the following commands in your R console:
+```{r}
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("Biostrings")
+```
+
+<br></br>
+
+
+3.2 Now, let's load the `Biostrings` package so we can use it during our R session. To do this, we use the `library` command:
+```{r}
+library(Biostrings)
+```
+Now all the functions in `Biostrings` are loaded and ready to use! We'll use functions from `Biostrings` in Exercise 4.
+
+<br></br>
+<br></br>
+<br></br>
+
+
+## 🧬 Exercise 4: Use the Biostrings package to manipulate biological sequence (DNA, RNA, amino acid) data in R
+
+The `Biostrings` package has a ton of really useful functions for manipulating biological text data (strings)! Let's try out some of them ourselves.
+
+<br></br>
+
+4.1 First, let's store the following DNA sequence as a variable, `mcr`. This DNA sequence is an antibiotic resistance gene, specifically [*mcr-1*](https://www.thelancet.com/journals/laninf/article/PIIS1473-3099(15)00424-7/abstract).
+```{r}
+mcr <- "atgatgcagcatacttctgtgtggtaccgacgctcggtcagtccgtttgttcttgtggcgagtgttgccgttttcttgaccgcgaccgccaatcttaccttttttgataaaatcagccaaacctatcccatcgcggacaatctcggctttgtgctgacgatcgctgtcgtgctctttggcgcgatgctactgatcaccacgctgttatcatcgtatcgctatgtgctaaagcctgtgttgattttgctattaatcatgggcgcggtgaccagttattttactgacacttatggcacggtctatgatacgaccatgctccaaaatgccctacagaccgaccaagccgagaccaaggatctattaaacgcagcgtttatcatgcgtatcattggtttgggtgtgctaccaagtttgcttgtggcttttgttaaggtggattatccgacttggggcaagggtttgatgcgccgattgggcttgatcgtggcaagtcttgcgctgattttactgcctgtggtggcgttcagcagtcattatgccagtttctttcgcgtgcataagccgctgcgtagctatgtcaatccgatcatgccaatctactcggtgggtaagcttgccagtattgagtataaaaaagccagtgcgccaaaagataccatttatcacgccaaagacgcggtacaagcaaccaagcctgatatgcgtaagccacgcctagtggtgttcgtcgtcggtgagacggcacgcgccgatcatgtcagcttcaatggctatgagcgcgatactttcccacagcttgccaagatcgatggcgtgaccaattttagcaatgtcacatcgtgcggcacatcgacggcgtattctgtgccgtgtatgttcagctatctgggcgcggatgagtatgatgtcgataccgccaaataccaagaaaatgtgctggatacgctggatcgcttgggcgtaagtatcttgtggcgtgataataattcggactcaaaaggcgtgatggataagctgccaaaagcgcaatttgccgattataaatccgcgaccaacaacgccatctgcaacaccaatccttataacgaatgccgcgatgtcggtatgctcgttggcttagatgactttgtcgctgccaataacggcaaagatatgctgatcatgctgcaccaaatgggcaatcacgggcctgcgtattttaagcgatatgatgaaaagtttgccaaattcacgccagtgtgtgaaggtaatgagcttgccaagtgcgaacatcagtccttgatcaatgcttatgacaatgccttgcttgccaccgatgatttcatcgctcaaagtatccagtggctgcagacgcacagcaatgcctatgatgtctcaatgctgtatgtcagcgatcatggcgaaagtctgggtgagaacggtgtctatctacatggtatgccaaatgcctttgcaccaaaagaacagcgcagtgtgcctgcatttttctggacggataagcaaactggcatcacgccaatggcaaccgataccgtcctgacccatgacgcgatcacgccgacattattaaagctgtttgatgtcaccgcggacaaagtcaaagaccgcaccgcattcatccgctga"
+```
+
+<br></br>
+
+4.2 How many characters (bp) long is *mcr-1*? Let's check using R's `nchar` function:
+```{r}
+nchar(mcr)
+```
+
+<br></br>
+
+4.3 To use the functions in the `Biostrings` package, let's convert `mcr` to a `DNAString` object (a special type of object; we need to do this to get our data to work with functions in `Biostrings`). We'll store our `DNAString` object as a new variable, `dna1`.
+```{r}
+dna1 <- DNAString(mcr)
+print(dna1)
+```
+
+<br></br>
+
+4.4 Let's apply the `complement` function from the `Biostrings` package to our `dna1` object, to find the complement of our DNA sequence:
+
+```{r}
+complement(dna1)
+```
+ 
+<br></br>
+
+
+4.5 We can get the reverse complement of our DNA sequence using the `reverseComplement` function:
+
+```{r}
+reverseComplement(dna1)
+```
+
+<br></br>
+
+4.6 Now let's translate our DNA sequence to an amino acid sequence using `translate`:
+```{r}
+translate(dna1)
+```
+
+<br></br>
+
+
+4.7 Let's translate our DNA sequence again, but this time, we'll covert it to an `AAStringSet` object (another special type of `Biostrings` object, which will allow us to write our resulting amino acid sequence to a file). We'll also save it as a variable, `prot1`:
+```{r}
+prot1 <- AAStringSet(translate(dna1))
+print(prot1)
+```
+
+<br></br>
+
+4.8 We can write our amino acid sequence (stored as an `AAStringSet` object in the variable `prot1`) to a FASTA file, `Mcr1.faa`:
+```{r}
+writeXStringSet(x = prot1, filepath = "Mcr1.faa", format = "fasta")
+```
